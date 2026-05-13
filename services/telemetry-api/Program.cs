@@ -1,9 +1,11 @@
+using TelemetryApi.Application;
+using TelemetryApi.Contracts;
+using TelemetryApi.Domain;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITelemetryService, TelemetryService>();
 
 var app = builder.Build();
 
@@ -20,6 +22,26 @@ app.MapGet("/healthcheck", () =>
 })
 .WithName("Healthcheck")
 .WithOpenApi();
+
+
+app.MapPost("/telemetry", async (
+    TelemetryIngestRequest request,
+    ITelemetryService service) =>
+{
+    var domainEvent = new TelemetryEvent(
+        request.DeviceId,
+        request.Timestamp,
+        request.Latitude,
+        request.Longitude,
+        request.Speed,
+        request.Battery,
+        request.Temperature
+    );
+
+    await service.IngestAsync(domainEvent);
+
+    return Results.Accepted();
+});
 
 app.Run();
 
