@@ -14,9 +14,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-
 app.MapGet("/healthcheck", () =>
 {
     return "?Hello world?";
