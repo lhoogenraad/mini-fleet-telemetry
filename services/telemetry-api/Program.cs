@@ -1,11 +1,15 @@
 using TelemetryApi.Application;
 using TelemetryApi.Contracts;
 using TelemetryApi.Domain;
+using TelemetryApi.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<ITelemetryService, TelemetryService>();
+builder.Services.AddScoped<ITelemetryRepository, PostgresTelemetryRepository>();
 
 var app = builder.Build();
 

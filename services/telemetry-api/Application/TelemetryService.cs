@@ -1,14 +1,19 @@
 using TelemetryApi.Domain;
+using TelemetryApi.Infrastructure;
 
 namespace TelemetryApi.Application;
 
 public class TelemetryService : ITelemetryService
 {
+    private readonly ITelemetryRepository _repo;
+
+    public TelemetryService(ITelemetryRepository repo)
+    {
+        _repo = repo;
+    }
+
     public Task IngestAsync(TelemetryEvent telemetry)
     {
-        // for now: just log / placeholder
-        Console.WriteLine($"Received telemetry for {telemetry.DeviceId}");
-
-        return Task.CompletedTask;
+        return _repo.InsertAsync(telemetry);
     }
 }
