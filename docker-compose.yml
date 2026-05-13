@@ -60,5 +60,14 @@ services:
       - telemetry-api
     restart: unless-stopped
 
+  telemetry-grpc-worker:
+    build:
+      context: .
+      dockerfile: services/telemetry-grpc-worker/Dockerfile
+    container_name: telemetry-grpc-worker
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+
 volumes:
   postgres-data:
