@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "TelemetryGrpc";
+
+package telemetry;
+
+service TelemetryProcessor {
+  rpc ProcessTelemetry (TelemetryRequest) returns (TelemetryResponse);
+}
+
+message TelemetryRequest {
+  string deviceId = 1;
+  string timestamp = 2;
+  double latitude = 3;
+  double longitude = 4;
+  double speed = 5;
+  int32 battery = 6;
+  double temperature = 7;
+}
+
+message TelemetryResponse {
+  bool success = 1;
+  string message = 2;
+}
