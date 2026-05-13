@@ -1,22 +1,20 @@
-# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
 WORKDIR /src
 
+# csproj first (for caching)
+COPY services/telemetry-api/telemetry-api.csproj services/telemetry-api/
+COPY services/telemetry-contracts/telemetry-contracts.csproj services/telemetry-contracts/
+
+RUN dotnet restore services/telemetry-api/telemetry-api.csproj
+
+# full source
 COPY . .
 
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish services/telemetry-api/telemetry-api.csproj -c Release -o /app/publish
 
-# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
-
 WORKDIR /app
 
 COPY --from=build /app/publish .
-
-ENV ASPNETCORE_URLS=http://0.0.0.0:8080
-
-EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "telemetry-api.dll"]

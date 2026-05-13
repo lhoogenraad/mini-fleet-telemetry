@@ -1,6 +1,6 @@
 using StackExchange.Redis;
 using System.Text.Json;
-using TelemetryApi.Domain;
+using TelemetryContracts;
 using TelemetryApi.Contracts;
 
 namespace TelemetryApi.Application;

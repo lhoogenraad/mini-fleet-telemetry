@@ -1,5 +1,5 @@
 using Npgsql;
-using TelemetryApi.Domain;
+using TelemetryContracts;
 
 namespace TelemetryApi.Infrastructure;
 

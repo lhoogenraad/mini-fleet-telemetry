@@ -1,4 +1,4 @@
-using TelemetryApi.Domain;
+using TelemetryContracts;
 
 namespace TelemetryApi.Application;
 

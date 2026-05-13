@@ -1,36 +1,7 @@
 version: "3.9"
 
 services:
-  telemetry-api:
-    build:
-      context: ./services/telemetry-api
-      dockerfile: Dockerfile
-    container_name: telemetry-api
-    ports:
-      - "8080:8080"
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=telemetry;Username=postgres;Password=postgres
-      Redis__ConnectionString: redis:6379
-    depends_on:
-      - postgres
-    restart: unless-stopped
-
-  device-input:
-    build:
-      context: ./services/device-input
-      dockerfile: Dockerfile
-    container_name: device-input
-    environment:
-      TELEMETRY_API_URL: http://telemetry-api:8080
-      DEVICE_COUNT: 25
-      EMIT_INTERVAL_MS: 2000
-    depends_on:
-      - telemetry-api
-    restart: unless-stopped
-
   postgres:
-    # To connect locally: psql -h localhost -U postgres postgres -w
     image: postgres:16
     container_name: telemetry-postgres
     ports:
@@ -48,6 +19,45 @@ services:
     container_name: telemetry-redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
+
+  telemetry-api:
+    depends_on:
+      - postgres
+      - redis
+    build:
+      context: .
+      dockerfile: services/telemetry-api/Dockerfile
+    container_name: telemetry-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=telemetry;Username=postgres;Password=postgres
+      Redis__ConnectionString: redis:6379
+    restart: unless-stopped
+
+  telemetry-worker:
+    build:
+      context: .
+      dockerfile: services/telemetry-worker/Dockerfile
+    container_name: telemetry-worker
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  device-input:
+    build:
+      context: ./services/device-input
+      dockerfile: Dockerfile
+    container_name: device-input
+    environment:
+      TELEMETRY_API_URL: http://telemetry-api:8080
+      DEVICE_COUNT: 25
+      EMIT_INTERVAL_MS: 2000
+    depends_on:
+      - telemetry-api
     restart: unless-stopped
 
 volumes:

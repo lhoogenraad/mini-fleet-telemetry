@@ -1,6 +1,6 @@
 using TelemetryApi.Application;
 using TelemetryApi.Contracts;
-using TelemetryApi.Domain;
+using TelemetryContracts;
 using TelemetryApi.Infrastructure;
 using StackExchange.Redis;
 
@@ -12,7 +12,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITelemetryService, TelemetryService>();
 builder.Services.AddScoped<ITelemetryRepository, PostgresTelemetryRepository>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
-    ConnectionMultiplexer.Connect("redis:6379"));
+{
+    var config = ConfigurationOptions.Parse("redis:6379");
+    config.AbortOnConnectFail = false;
+    config.ConnectRetry = 10;
+    config.ReconnectRetryPolicy = new ExponentialRetry(5000);
+
+    return ConnectionMultiplexer.Connect(config);
+});
 
 builder.Services.AddScoped<ITelemetryQueue, RedisTelemetryQueue>();
 

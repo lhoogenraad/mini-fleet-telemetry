@@ -1,21 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>telemetry_api</RootNamespace>
+    <UserSecretsId>dotnet-telemetry_worker-7c655eec-6211-4602-a050-dc521dd1ad15</UserSecretsId>
+    <RootNamespace>telemetry_worker</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Npgsql" Version="10.0.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.13.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\telemetry-contracts\telemetry-contracts.csproj" />
   </ItemGroup>
-
 </Project>
