@@ -10,7 +10,7 @@ function createPayload(deviceId: string) {
 		timestamp: new Date().toISOString(),
 		latitude: random(-90, 90),
 		longitude: random(-180, 180),
-		speed: random(0, 120),
+		speed: random(0, 200),
 		battery: random(20, 100),
 		temperature: random(-10, 40),
 	};
