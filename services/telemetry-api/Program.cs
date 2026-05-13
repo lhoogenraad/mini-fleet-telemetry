@@ -2,6 +2,7 @@ using TelemetryApi.Application;
 using TelemetryApi.Contracts;
 using TelemetryApi.Domain;
 using TelemetryApi.Infrastructure;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITelemetryService, TelemetryService>();
 builder.Services.AddScoped<ITelemetryRepository, PostgresTelemetryRepository>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
+    ConnectionMultiplexer.Connect("redis:6379"));
+
+builder.Services.AddScoped<ITelemetryQueue, RedisTelemetryQueue>();
 
 var app = builder.Build();
 
@@ -27,23 +32,11 @@ app.MapGet("/healthcheck", () =>
 .WithName("Healthcheck")
 .WithOpenApi();
 
-
 app.MapPost("/telemetry", async (
-    TelemetryIngestRequest request,
-    ITelemetryService service) =>
+    TelemetryEvent request,
+    ITelemetryQueue queue) =>
 {
-    var domainEvent = new TelemetryEvent(
-        request.DeviceId,
-        request.Timestamp,
-        request.Latitude,
-        request.Longitude,
-        request.Speed,
-        request.Battery,
-        request.Temperature
-    );
-
-    await service.IngestAsync(domainEvent);
-
+    await queue.EnqueueAsync(request);
     return Results.Accepted();
 });
 
