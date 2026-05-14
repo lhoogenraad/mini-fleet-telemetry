@@ -63,7 +63,7 @@ type DeviceInsight struct {
 	AvgSpeed       float64                `protobuf:"fixed64,2,opt,name=avg_speed,json=avgSpeed,proto3" json:"avg_speed,omitempty"`
 	AvgTemperature float64                `protobuf:"fixed64,3,opt,name=avg_temperature,json=avgTemperature,proto3" json:"avg_temperature,omitempty"`
 	AvgBattery     float64                `protobuf:"fixed64,4,opt,name=avg_battery,json=avgBattery,proto3" json:"avg_battery,omitempty"`
-	TotalEvents    int32                  `protobuf:"varint,5,opt,name=total_events,json=totalEvents,proto3" json:"total_events,omitempty"`
+	EventCount     int32                  `protobuf:"varint,5,opt,name=event_count,json=eventCount,proto3" json:"event_count,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -126,9 +126,9 @@ func (x *DeviceInsight) GetAvgBattery() float64 {
 	return 0
 }
 
-func (x *DeviceInsight) GetTotalEvents() int32 {
+func (x *DeviceInsight) GetEventCount() int32 {
 	if x != nil {
-		return x.TotalEvents
+		return x.EventCount
 	}
 	return 0
 }
@@ -181,19 +181,20 @@ var File_proto_insights_proto protoreflect.FileDescriptor
 
 const file_proto_insights_proto_rawDesc = "" +
 	"\n" +
-	"\x14proto/insights.proto\x12\x12telemetry.insights\"\x11\n" +
-	"\x0fInsightsRequest\"\xb6\x01\n" +
+	"\x14proto/insights.proto\x12\binsights\"\x11\n" +
+	"\x0fInsightsRequest\"\xb4\x01\n" +
 	"\rDeviceInsight\x12\x1b\n" +
 	"\tdevice_id\x18\x01 \x01(\tR\bdeviceId\x12\x1b\n" +
 	"\tavg_speed\x18\x02 \x01(\x01R\bavgSpeed\x12'\n" +
 	"\x0favg_temperature\x18\x03 \x01(\x01R\x0eavgTemperature\x12\x1f\n" +
 	"\vavg_battery\x18\x04 \x01(\x01R\n" +
-	"avgBattery\x12!\n" +
-	"\ftotal_events\x18\x05 \x01(\x05R\vtotalEvents\"O\n" +
-	"\x10InsightsResponse\x12;\n" +
-	"\adevices\x18\x01 \x03(\v2!.telemetry.insights.DeviceInsightR\adevices2j\n" +
-	"\x0eDeviceInsights\x12X\n" +
-	"\vGetInsights\x12#.telemetry.insights.InsightsRequest\x1a$.telemetry.insights.InsightsResponseB\tZ\a./protob\x06proto3"
+	"avgBattery\x12\x1f\n" +
+	"\vevent_count\x18\x05 \x01(\x05R\n" +
+	"eventCount\"E\n" +
+	"\x10InsightsResponse\x121\n" +
+	"\adevices\x18\x01 \x03(\v2\x17.insights.DeviceInsightR\adevices2V\n" +
+	"\x0eDeviceInsights\x12D\n" +
+	"\vGetInsights\x12\x19.insights.InsightsRequest\x1a\x1a.insights.InsightsResponseB\tZ\a./protob\x06proto3"
 
 var (
 	file_proto_insights_proto_rawDescOnce sync.Once
@@ -209,14 +210,14 @@ func file_proto_insights_proto_rawDescGZIP() []byte {
 
 var file_proto_insights_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_proto_insights_proto_goTypes = []any{
-	(*InsightsRequest)(nil),  // 0: telemetry.insights.InsightsRequest
-	(*DeviceInsight)(nil),    // 1: telemetry.insights.DeviceInsight
-	(*InsightsResponse)(nil), // 2: telemetry.insights.InsightsResponse
+	(*InsightsRequest)(nil),  // 0: insights.InsightsRequest
+	(*DeviceInsight)(nil),    // 1: insights.DeviceInsight
+	(*InsightsResponse)(nil), // 2: insights.InsightsResponse
 }
 var file_proto_insights_proto_depIdxs = []int32{
-	1, // 0: telemetry.insights.InsightsResponse.devices:type_name -> telemetry.insights.DeviceInsight
-	0, // 1: telemetry.insights.DeviceInsights.GetInsights:input_type -> telemetry.insights.InsightsRequest
-	2, // 2: telemetry.insights.DeviceInsights.GetInsights:output_type -> telemetry.insights.InsightsResponse
+	1, // 0: insights.InsightsResponse.devices:type_name -> insights.DeviceInsight
+	0, // 1: insights.DeviceInsights.GetInsights:input_type -> insights.InsightsRequest
+	2, // 2: insights.DeviceInsights.GetInsights:output_type -> insights.InsightsResponse
 	2, // [2:3] is the sub-list for method output_type
 	1, // [1:2] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

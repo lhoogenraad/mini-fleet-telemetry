@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	DeviceInsights_GetInsights_FullMethodName = "/telemetry.insights.DeviceInsights/GetInsights"
+	DeviceInsights_GetInsights_FullMethodName = "/insights.DeviceInsights/GetInsights"
 )
 
 // DeviceInsightsClient is the client API for DeviceInsights service.
@@ -108,7 +108,7 @@ func _DeviceInsights_GetInsights_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DeviceInsights_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "telemetry.insights.DeviceInsights",
+	ServiceName: "insights.DeviceInsights",
 	HandlerType: (*DeviceInsightsServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

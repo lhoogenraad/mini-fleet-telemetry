@@ -4,7 +4,7 @@ using TelemetryApi.Contracts;
 using TelemetryApi.Infrastructure;
 using TelemetryContracts;
 using TelemetryGrpc;
-using TelemetryInsights;
+using Insights;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -18,6 +18,14 @@ type server struct {
 	db *sql.DB
 }
 
+type insightRow struct {
+    DeviceId        string
+    AvgSpeed        float64
+    AvgTemperature  float64
+    AvgBattery      float64
+    TotalEvents     int64
+}
+
 func (s *server) GetInsights(
 	ctx context.Context,
 	req *pb.InsightsRequest,
@@ -45,7 +53,6 @@ func (s *server) GetInsights(
 
 	for rows.Next() {
 		var insight pb.DeviceInsight
-
 		var totalEvents int64
 
 		err := rows.Scan(
@@ -55,14 +62,14 @@ func (s *server) GetInsights(
 			&insight.AvgBattery,
 			&totalEvents,
 		)
-
-		insight.TotalEvents = int32(totalEvents)
-
 		if err != nil {
 			return nil, err
 		}
 
-		response.Devices = append(response.Devices, &insight)
+		insight.EventCount = int32(totalEvents)
+
+		copy := insight
+		response.Devices = append(response.Devices, &copy)
 	}
 
 	log.Printf("Returned %d device insights", len(response.Devices))

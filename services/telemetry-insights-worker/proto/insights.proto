@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package telemetry.insights;
+package insights;
 
 option go_package = "./proto";
 
@@ -15,7 +15,7 @@ message DeviceInsight {
   double avg_speed = 2;
   double avg_temperature = 3;
   double avg_battery = 4;
-  int32 total_events = 5;
+  int32 event_count = 5;
 }
 
 message InsightsResponse {

@@ -1,21 +1,21 @@
 syntax = "proto3";
 
-option csharp_namespace = "TelemetryInsights";
+package insights;
 
-package telemetry.insights;
+option go_package = "./proto";
 
 service DeviceInsights {
-  rpc GetInsights (InsightsRequest)
-      returns (InsightsResponse);
+  rpc GetInsights (InsightsRequest) returns (InsightsResponse);
 }
 
 message InsightsRequest {}
 
 message DeviceInsight {
-  string deviceId = 1;
-  int32 eventCount = 2;
-  double averageSpeed = 3;
-  double averageBattery = 4;
+  string device_id = 1;
+  double avg_speed = 2;
+  double avg_temperature = 3;
+  double avg_battery = 4;
+  int32 event_count = 5;
 }
 
 message InsightsResponse {
