@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package telemetry.insights;
+
+option go_package = "./proto";
+
+service DeviceInsights {
+  rpc GetInsights (InsightsRequest) returns (InsightsResponse);
+}
+
+message InsightsRequest {}
+
+message DeviceInsight {
+  string device_id = 1;
+  double avg_speed = 2;
+  double avg_temperature = 3;
+  double avg_battery = 4;
+  int32 total_events = 5;
+}
+
+message InsightsResponse {
+  repeated DeviceInsight devices = 1;
+}

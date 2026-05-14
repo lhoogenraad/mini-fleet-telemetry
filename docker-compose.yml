@@ -46,6 +46,9 @@ services:
       - postgres
       - redis
     restart: unless-stopped
+    environment:
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=telemetry;Username=postgres;Password=postgres
+      Redis__ConnectionString: redis:6379
 
   device-input:
     build:
@@ -67,6 +70,15 @@ services:
     container_name: telemetry-grpc-worker
     ports:
       - "8081:8081"
+    restart: unless-stopped
+
+  telemetry-insights-worker:
+    build:
+      context: ./services/telemetry-insights-worker
+      dockerfile: Dockerfile
+    container_name: telemetry-insights-worker
+    depends_on:
+      - postgres
     restart: unless-stopped
 
 volumes:
