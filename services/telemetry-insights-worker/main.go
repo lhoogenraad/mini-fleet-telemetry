@@ -46,13 +46,17 @@ func (s *server) GetInsights(
 	for rows.Next() {
 		var insight pb.DeviceInsight
 
+		var totalEvents int64
+
 		err := rows.Scan(
 			&insight.DeviceId,
 			&insight.AvgSpeed,
 			&insight.AvgTemperature,
 			&insight.AvgBattery,
-			&insight.TotalEvents,
+			&totalEvents,
 		)
+
+		insight.TotalEvents = int32(totalEvents)
 
 		if err != nil {
 			return nil, err
